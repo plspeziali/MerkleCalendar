@@ -6,10 +6,10 @@ export class LeafCalendar implements CalendarNode{
     private _name: string;
     private _parent: CalendarNode;
     private _timestamp: Date;
-    private _storageGroup: StorageGroup[];
+    private _storageGroup: StorageGroup;
 
 
-    constructor(hash: string, name: string, parent: CalendarNode, timestamp: Date, storageGroup: StorageGroup[]) {
+    constructor(hash: string, name: string, parent: CalendarNode, timestamp: Date, storageGroup: StorageGroup) {
         this._hash = hash;
         this._name = name;
         this._parent = parent;
@@ -50,11 +50,11 @@ export class LeafCalendar implements CalendarNode{
         this._timestamp = value;
     }
 
-    get storageGroup(): StorageGroup[] {
+    get storageGroup(): StorageGroup {
         return this._storageGroup;
     }
 
-    set storageGroup(value: StorageGroup[]) {
+    set storageGroup(value: StorageGroup) {
         this._storageGroup = value;
     }
 }

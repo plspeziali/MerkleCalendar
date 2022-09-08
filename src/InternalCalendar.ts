@@ -29,19 +29,14 @@ export class InternalCalendar implements CalendarNode{
         }
     }
 
-    calculateHash() {
-        MerkleTools.tree.resetTree();
+    public calculateHash() {
         let list = [];
         for (let el of this.children) {
             if (el.hash != null) {
                 list.push(el.hash);
             }
         }
-        if (list.length != 0) {
-            MerkleTools.tree.addLeaves(list);
-            MerkleTools.tree.makeTree()
-            this.hash = MerkleTools.tree.getMerkleRoot().toString('hex');
-        }
+        this._hash = MerkleTools.calculateTree(list);
     }
 
     get category(): Category {
