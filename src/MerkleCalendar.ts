@@ -1,5 +1,6 @@
 import {InternalCalendar} from './InternalCalendar';
 import {LeafCalendar} from './LeafCalendar';
+import {MerkleTools} from "./MerkleTools";
 
 export class MerkleCalendar {
 
@@ -7,6 +8,7 @@ export class MerkleCalendar {
     private open: InternalCalendar;
 
     constructor() {
+        MerkleTools.initMT();
         this.closed = new InternalCalendar("Closed", 0, null);
         this.open = new InternalCalendar("Open", 0, null);
     }

@@ -1,110 +1,111 @@
 import {LeafCalendar} from './LeafCalendar';
 import {Category} from './Category';
 import {CalendarNode} from './CalendarNode';
+import {MerkleTools} from "./MerkleTools";
 
 export class InternalCalendar implements CalendarNode{
 
-    private category: Category;    //0: Open or Closed Subtree root, 1: year, 2: month
-    private children: CalendarNode[];
-    name: string;
-    hash: string;
-    parent: CalendarNode;
+    private _category: Category;    //0: Open or Closed Subtree root, 1: year, 2: month
+    private _children: CalendarNode[];
+    private _name: string;
+    private _hash: string;
+    private _parent: CalendarNode;
 
 
     constructor(name: string, category: number, parent: CalendarNode) {
-        this.name = name;
-        this.category = category;
-        this.parent = parent;
-        this.children = [];
-        this.hash = null;
+        this._name = name;
+        this._category = category;
+        this._parent = parent;
+        this._children = [];
+        this._hash = null;
     }
 
     public addChild(node: CalendarNode) {
-        this.children.push(node);
-        if (this.category == 2) {
-            this.children.sort(function (a: LeafCalendar, b: LeafCalendar) {
-                return a.timestamp - b.timestamp;
-            });
+        this._children.push(node);
+        if (this._category == 2) {
+            this._children.sort((a: LeafCalendar, b: LeafCalendar) => a.timestamp.getTime() - b.timestamp.getTime() );
         } else {
-            this.children.sort(function (a: InternalCalendar, b: InternalCalenda) {
-                return a.getName() - b.getName();
-            });
+            this._children.sort((a: InternalCalendar, b: InternalCalendar) => a.name.localeCompare(b.name));
         }
     }
 
     calculateHash() {
-        merkleTools.resetTree();
+        MerkleTools.tree.resetTree();
         let list = [];
-        for (let el of this.#children) {
-            if (el.getHash() != null) {
-                list.push(el.getHash());
+        for (let el of this.children) {
+            if (el.hash != null) {
+                list.push(el.hash);
             }
         }
         if (list.length != 0) {
-            merkleTools.addLeaves(list);
-            merkleTools.makeTree()
-            this.#hash = merkleTools.getMerkleRoot().toString('hex');
+            MerkleTools.tree.addLeaves(list);
+            MerkleTools.tree.makeTree()
+            this.hash = MerkleTools.tree.getMerkleRoot().toString('hex');
         }
     }
 
-    getName() {
-        return this.#name;
+    get category(): Category {
+        return this._category;
     }
 
-    getCategory() {
-        return this.#category;
+    get children(): CalendarNode[] {
+        return this._children;
     }
 
-    getParent() {
-        return this.#parent;
+    get name(): string {
+        return this._name;
     }
 
-    getHash() {
-        return this.#hash;
+    get hash(): string {
+        return this._hash;
     }
 
-    setHash(hash) {
-        this.#hash = hash;
+    get parent(): CalendarNode {
+        return this._parent;
     }
 
-    getChildren() {
-        return this.#children;
+    set name(value: string) {
+        this._name = value;
     }
 
-    getChildrenHashes() {
-        let children = this.getChildren();
-        const hashes = [];
+    set hash(value: string) {
+        this._hash = value;
+    }
+
+    getChildrenHashes(): string[] {
+        let children = this.children;
+        let hashes = [];
         for (let c of children) {
-            hashes.push(c.getHash());
+            hashes.push(c.hash);
         }
         return hashes;
     }
 
-    getChildByNum(num) {
-        return this.#children[num];
+    getChildByNum(num) : CalendarNode{
+        return this.children[num];
     }
 
-    getChildByName(name) {
-        for (let el of this.#children) {
-            if (el.getName() == name) {
+    getChildByName(name) : CalendarNode{
+        for (let el of this.children) {
+            if (el.name == name) {
                 return el;
             }
         }
         return null;
     }
 
-    indexOf(name) {
-        return this.#children.indexOf(name);
+    indexOf(name) : number{
+        return this.children.indexOf(name);
     }
 
-    findNode(hash) {
-        for (let el of this.#children) {
-            if (el.getHash() == hash && this.#category == 2) {
+    findNode(hash) : CalendarNode{
+        for (let el of this.children) {
+            if (el.hash == hash && this.category == 2) {
                 return el;
             }
             let ret = null;
-            if (this.#category != 2) {
-                ret = el.findNode(hash);
+            if (this.category != 2) {
+                ret = (el as InternalCalendar).findNode(hash);
             }
             if (ret != null) {
                 return ret;

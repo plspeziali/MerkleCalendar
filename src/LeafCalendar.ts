@@ -50,10 +50,6 @@ export class LeafCalendar implements CalendarNode{
         this._timestamp = value;
     }
 
-    public getDay(): int{
-
-    }
-
     get storageGroup(): StorageGroup[] {
         return this._storageGroup;
     }
