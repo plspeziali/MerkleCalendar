@@ -17,7 +17,7 @@ export class InternalCalendar implements CalendarNode{
         this._category = category;
         this._parent = parent;
         this._children = [];
-        this._hash = null;
+        this._hash = "";
     }
 
     public addChild(node: CalendarNode) {
@@ -76,24 +76,24 @@ export class InternalCalendar implements CalendarNode{
         return hashes;
     }
 
-    getChildByNum(num) : CalendarNode{
+    getChildByNum(num: number) : CalendarNode{
         return this.children[num];
     }
 
-    getChildByName(name) : CalendarNode{
+    getChildByName(name: string) : CalendarNode{
         for (let el of this.children) {
             if (el.name == name) {
                 return el;
             }
         }
-        return null;
+        return null as any;
     }
 
-    indexOf(name) : number{
+    indexOf(name: string) : number{
         return this.children.indexOf(name);
     }
 
-    findNode(hash) : CalendarNode{
+    findNode(hash: string) : CalendarNode{
         for (let el of this.children) {
             if (el.hash == hash && this.category == 2) {
                 return el;
@@ -106,7 +106,7 @@ export class InternalCalendar implements CalendarNode{
                 return ret;
             }
         }
-        return null;
+        return null as any;
     }
 
 }

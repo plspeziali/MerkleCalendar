@@ -1,5 +1,5 @@
 // @ts-ignore
-import * as MerkleTree from '../node_modules/merkle-tools/merkletools';
+import * as MerkleTree from "../node_modules/merkle-tools/merkletools";
 import * as crypto from "crypto";
 
 export class MerkleTools{
@@ -32,17 +32,16 @@ export class MerkleTools{
         this._tree.resetTree();
         this._tree.addLeaves(list);
         this._tree.makeTree()
-        const root = this._tree.getMerkleRoot().toString('hex');
-        return root;
+        return this._tree.getMerkleRoot().toString('hex');
     }
 
-    public static getProof(leaf): Object {
+    public static getProof(leaf: string): Object {
         for (let i = 0; i < this._tree.getLeafCount(); i++) {
             if (this._tree.getLeaf(i).toString('hex') == leaf) {
                 return this._tree.getProof(i);
             }
         }
-        return null;
+        return null as any;
     }
 
     public static validateProof(proof: Object, targetHash: string, merkleRoot: string): boolean{

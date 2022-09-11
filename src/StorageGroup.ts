@@ -5,6 +5,10 @@ export class StorageGroup {
     private _hash: string;
     private _map: StorageUnit[];
 
+    constructor(hash: string, map: StorageUnit[]) {
+        this._hash = hash;
+        this._map = map;
+    }
 
     get hash(): string {
         return this._hash;

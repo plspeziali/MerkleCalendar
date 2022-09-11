@@ -3,6 +3,10 @@ export class StorageUnit {
     private _hash: string;
     private _uuid: string;
 
+    constructor(hash: string, uuid: string) {
+        this._hash = hash;
+        this._uuid = uuid;
+    }
 
     get hash(): string {
         return this._hash;

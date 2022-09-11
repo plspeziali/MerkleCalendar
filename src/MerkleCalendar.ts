@@ -148,7 +148,7 @@ export class MerkleCalendar {
         }
         for (year of this.closed.children) {
             for (month of year.children) {
-                for (leaf of month.getChildren()) {
+                for (leaf of month.children) {
                     closedA.push({
                         name: leaf.name,
                         timestamp: leaf.timestamp,
@@ -224,12 +224,12 @@ export class MerkleCalendar {
         const oHash = this.open.hash;
         if (cHash == null) {
             if (oHash == null) {
-                return [null, null];
+                return [null as any, null as any];
             }
-            return [oHash, null];
+            return [oHash, null as any];
         }
         if (oHash == null) {
-            return [null, cHash];
+            return [null as any, cHash];
         }
         return [oHash, cHash];
     }
@@ -238,39 +238,39 @@ export class MerkleCalendar {
         return MerkleTools.concatHash(this.getOCRoots());
     }
 
-    getProof(leaf, root): Object {
+    getProof(leaf: LeafCalendar, root: string): Object {
         const proofTree = {};
         let proof = this.generateProof(leaf);
         const monthNode = leaf.parent;
         Object.assign(proofTree, {monthProof: proof});
-        Object.assign(proofTree, {monthHash: monthNode.getHash()});
+        Object.assign(proofTree, {monthHash: monthNode.hash});
 
         proof = this.generateProof(monthNode);
         const yearNode = monthNode.parent;
         Object.assign(proofTree, {yearProof: proof});
-        Object.assign(proofTree, {yearHash: yearNode.getHash()});
+        Object.assign(proofTree, {yearHash: yearNode.hash});
 
         proof = this.generateProof(yearNode);
         const rootNode = monthNode.parent;
         Object.assign(proofTree, {rootProof: proof});
-        Object.assign(proofTree, {rootHash: rootNode.getHash()});
+        Object.assign(proofTree, {rootHash: rootNode.hash});
         Object.assign(proofTree, {BSPRoot: root});
         return proofTree;
     }
 
-    generateProof(node): Object {
-        const parent = node.getParent();
+    generateProof(node: CalendarNode): Object {
+        const parent = node.parent;
         const hashes = parent.getChildrenHashes();
         this.calculateHash(hashes);
-        return this.calculateProof(node.getHash());
+        return this.calculateProof(node.hash);
     }
 
     checkProof(node, proofTree) {
-        let result = MerkleTools.validateProof(proofTree.monthProof, node.getHash(), proofTree.monthHash);
-        node = node.getParent();
-        result = result && MerkleTools.validateProof(proofTree.yearProof, node.getHash(), proofTree.yearHash);
-        node = node.getParent();
-        result = result && MerkleTools.validateProof(proofTree.rootProof, node.getHash(), proofTree.rootHash);
+        let result = MerkleTools.validateProof(proofTree.monthProof, node.hash, proofTree.monthHash);
+        node = node.parent;
+        result = result && MerkleTools.validateProof(proofTree.yearProof, node.hash, proofTree.yearHash);
+        node = node.parent;
+        result = result && MerkleTools.validateProof(proofTree.rootProof, node.hash, proofTree.rootHash);
         return result;
     }
 }
