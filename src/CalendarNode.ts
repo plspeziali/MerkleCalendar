@@ -1,9 +1,5 @@
-
-
-export interface CalendarNode{
-
-    name: string;
-    hash: string;
-    parent: CalendarNode;
-
+export interface CalendarNode {
+  name: string;
+  hash: string;
+  parent: CalendarNode;
 }

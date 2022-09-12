@@ -1,32 +1,31 @@
-import {StorageUnit} from "./StorageUnit";
+import { StorageUnit } from './StorageUnit';
 
 export class StorageGroup {
+  private _hash: string;
+  private _map: StorageUnit[];
 
-    private _hash: string;
-    private _map: StorageUnit[];
+  constructor(hash: string, map: StorageUnit[]) {
+    this._hash = hash;
+    this._map = map;
+  }
 
-    constructor(hash: string, map: StorageUnit[]) {
-        this._hash = hash;
-        this._map = map;
-    }
+  get hash(): string {
+    return this._hash;
+  }
 
-    get hash(): string {
-        return this._hash;
-    }
+  set hash(value: string) {
+    this._hash = value;
+  }
 
-    set hash(value: string) {
-        this._hash = value;
-    }
+  get map(): StorageUnit[] {
+    return this._map;
+  }
 
-    get map(): StorageUnit[] {
-        return this._map;
-    }
+  set map(value: StorageUnit[]) {
+    this._map = value;
+  }
 
-    set map(value: StorageUnit[]) {
-        this._map = value;
-    }
-
-    public addToSG(o: StorageUnit){
-        this._map.push(o);
-    }
+  public addToSG(o: StorageUnit) {
+    this._map.push(o);
+  }
 }

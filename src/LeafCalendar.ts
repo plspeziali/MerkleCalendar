@@ -1,60 +1,58 @@
-import {CalendarNode} from "./CalendarNode";
-import {StorageGroup} from "./StorageGroup";
+import { CalendarNode } from './CalendarNode';
+import { StorageGroup } from './StorageGroup';
 
-export class LeafCalendar implements CalendarNode{
-    private _hash: string;
-    private _name: string;
-    private _parent: CalendarNode;
-    private _timestamp: Date;
-    private _storageGroup: StorageGroup;
+export class LeafCalendar implements CalendarNode {
+  private _hash: string;
+  private _name: string;
+  private _parent: CalendarNode;
+  private _timestamp: Date;
+  private _storageGroup: StorageGroup;
 
+  constructor(hash: string, name: string, parent: CalendarNode, timestamp: Date, storageGroup: StorageGroup) {
+    this._hash = hash;
+    this._name = name;
+    this._parent = parent;
+    this._timestamp = timestamp;
+    this._storageGroup = storageGroup;
+  }
 
-    constructor(hash: string, name: string, parent: CalendarNode, timestamp: Date, storageGroup: StorageGroup) {
-        this._hash = hash;
-        this._name = name;
-        this._parent = parent;
-        this._timestamp = timestamp;
-        this._storageGroup = storageGroup;
-    }
+  get hash(): string {
+    return this._hash;
+  }
 
+  set hash(value: string) {
+    this._hash = value;
+  }
 
-    get hash(): string {
-        return this._hash;
-    }
+  get name(): string {
+    return this._name;
+  }
 
-    set hash(value: string) {
-        this._hash = value;
-    }
+  set name(value: string) {
+    this._name = value;
+  }
 
-    get name(): string {
-        return this._name;
-    }
+  get parent(): CalendarNode {
+    return this._parent;
+  }
 
-    set name(value: string) {
-        this._name = value;
-    }
+  set parent(value: CalendarNode) {
+    this._parent = value;
+  }
 
-    get parent(): CalendarNode {
-        return this._parent;
-    }
+  get timestamp(): Date {
+    return this._timestamp;
+  }
 
-    set parent(value: CalendarNode) {
-        this._parent = value;
-    }
+  set timestamp(value: Date) {
+    this._timestamp = value;
+  }
 
-    get timestamp(): Date {
-        return this._timestamp;
-    }
+  get storageGroup(): StorageGroup {
+    return this._storageGroup;
+  }
 
-    set timestamp(value: Date) {
-        this._timestamp = value;
-    }
-
-    get storageGroup(): StorageGroup {
-        return this._storageGroup;
-    }
-
-    set storageGroup(value: StorageGroup) {
-        this._storageGroup = value;
-    }
+  set storageGroup(value: StorageGroup) {
+    this._storageGroup = value;
+  }
 }

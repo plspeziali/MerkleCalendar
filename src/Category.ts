@@ -1,5 +1,5 @@
 export enum Category {
-    ROOT,
-    YEAR,
-    MONTH
+  ROOT,
+  YEAR,
+  MONTH,
 }
