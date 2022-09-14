@@ -1,1 +1,0 @@
-export { MerkleCalendar } from './src/MerkleCalendar'
