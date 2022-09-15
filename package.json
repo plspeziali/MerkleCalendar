@@ -2,8 +2,8 @@
   "name": "merkle-calendar",
   "version": "1.0.0",
   "description": "",
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "main": "index.ts",
+  "types": "index.d.ts",
   "scripts": {
     "test": "jest --config jestconfig.json",
     "build": "tsc",
