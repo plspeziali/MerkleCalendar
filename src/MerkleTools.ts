@@ -1,20 +1,12 @@
 // @ts-ignore
-import * as MerkleTree from '../node_modules/merkle-tools/merkletools';
+const { MerkleTree } = require('merkletreejs')
 import * as crypto from 'crypto';
 
 export class MerkleTools {
-  private static _tree: MerkleTree;
+  private static _tree: typeof MerkleTree;
 
   public static initMT() {
-    MerkleTools._tree = new MerkleTree({ hashType: 'sha256' });
-  }
-
-  public static get tree(): MerkleTree {
-    return this._tree;
-  }
-
-  public static set tree(value: MerkleTree) {
-    this._tree = value;
+    MerkleTools._tree = new MerkleTree([],{ hashType: 'sha256' });
   }
 
   public static concatHash(strings: string[]) {
@@ -28,8 +20,8 @@ export class MerkleTools {
   public static calculateTree(list: string[]) {
     this._tree.resetTree();
     this._tree.addLeaves(list);
-    this._tree.makeTree();
-    return this._tree.getMerkleRoot().toString('hex');
+    let root = this._tree.getRoot()
+    return this._tree.bufferToHex(root);
   }
 
   public static getProof(leaf: string): object {
@@ -42,6 +34,6 @@ export class MerkleTools {
   }
 
   public static validateProof(proof: object, targetHash: string, merkleRoot: string): boolean {
-    return this._tree.validateProof(proof, targetHash, merkleRoot);
+    return this._tree.verify(proof, targetHash, merkleRoot);
   }
 }
