@@ -5,17 +5,17 @@ export declare class ProofTree {
     private _yearHash;
     private _monthProof;
     private _monthHash;
-    constructor(rootProof: object, rootHash: string, yearProof: object, yearHash: string, monthProof: object, monthHash: string);
-    get rootProof(): object;
-    set rootProof(value: object);
+    constructor(rootProof: any[], rootHash: string, yearProof: any[], yearHash: string, monthProof: any[], monthHash: string);
+    get rootProof(): any[];
+    set rootProof(value: any[]);
     get rootHash(): string;
     set rootHash(value: string);
-    get yearProof(): object;
-    set yearProof(value: object);
+    get yearProof(): any[];
+    set yearProof(value: any[]);
     get yearHash(): string;
     set yearHash(value: string);
-    get monthProof(): object;
-    set monthProof(value: object);
+    get monthProof(): any[];
+    set monthProof(value: any[]);
     get monthHash(): string;
     set monthHash(value: string);
 }

@@ -10,8 +10,8 @@ export declare class MerkleCalendar {
     addRegistration(name: string, hash: string, timestamp: Date, closed: boolean, storageGroup: StorageGroup, mHash: string, yHash: string): LeafCalendar;
     createLeaf(name: string, hash: string, timestamp: Date, closed: boolean, monthNode: InternalCalendar, storageGroup: StorageGroup): LeafCalendar;
     combineHash(timestamp: Date, hash: string): string;
-    getBSPRoot(hash: string, oHash: string, cHash: string): any;
-    calculateHash(list: string[]): any;
+    getBSPRoot(hash: string, oHash: string, cHash: string): string;
+    calculateHash(list: string[]): string;
     calculateProof(leaf: string): object;
     loadTree(open: InternalCalendar, closed: InternalCalendar): void;
     getTree(): InternalCalendar[];

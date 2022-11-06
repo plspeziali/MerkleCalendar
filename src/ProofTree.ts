@@ -1,17 +1,17 @@
 export class ProofTree {
-  private _rootProof: object;
+  private _rootProof: any[];
   private _rootHash: string;
-  private _yearProof: object;
+  private _yearProof: any[];
   private _yearHash: string;
-  private _monthProof: object;
+  private _monthProof: any[];
   private _monthHash: string;
 
   constructor(
-    rootProof: object,
+    rootProof: any[],
     rootHash: string,
-    yearProof: object,
+    yearProof: any[],
     yearHash: string,
-    monthProof: object,
+    monthProof: any[],
     monthHash: string,
   ) {
     this._rootProof = rootProof;
@@ -22,11 +22,11 @@ export class ProofTree {
     this._monthHash = monthHash;
   }
 
-  get rootProof(): object {
+  get rootProof(): any[] {
     return this._rootProof;
   }
 
-  set rootProof(value: object) {
+  set rootProof(value: any[]) {
     this._rootProof = value;
   }
 
@@ -38,11 +38,11 @@ export class ProofTree {
     this._rootHash = value;
   }
 
-  get yearProof(): object {
+  get yearProof(): any[] {
     return this._yearProof;
   }
 
-  set yearProof(value: object) {
+  set yearProof(value: any[]) {
     this._yearProof = value;
   }
 
@@ -54,11 +54,11 @@ export class ProofTree {
     this._yearHash = value;
   }
 
-  get monthProof(): object {
+  get monthProof(): any[] {
     return this._monthProof;
   }
 
-  set monthProof(value: object) {
+  set monthProof(value: any[]) {
     this._monthProof = value;
   }
 
