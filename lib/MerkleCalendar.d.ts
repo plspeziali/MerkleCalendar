@@ -22,4 +22,7 @@ export declare class MerkleCalendar {
     getProof(leaf: LeafCalendar, root: string): object;
     generateProof(node: CalendarNode): object;
     checkProof(node: CalendarNode, proofTree: ProofTree): boolean;
+    serializeMC(): string;
+    deserializeMC(json: string): void;
+    serializeSG(leaf: LeafCalendar): object;
 }

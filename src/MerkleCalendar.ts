@@ -202,7 +202,7 @@ export class MerkleCalendar {
         openA = [];
         for (leaf of month.children) {
           leaf = leaf as LeafCalendar;
-          let sg = this.serializeSG((leaf as LeafCalendar));
+          const sg = this.serializeSG((leaf as LeafCalendar));
           openA.push({
             name: leaf.name,
             timestamp: leaf.timestamp,
@@ -231,7 +231,7 @@ export class MerkleCalendar {
         closedA = [];
         for (leaf of month.children) {
           leaf = leaf as LeafCalendar;
-          let sg = this.serializeSG((leaf as LeafCalendar));
+          const sg = this.serializeSG((leaf as LeafCalendar));
           closedA.push({
             name: leaf.name,
             timestamp: leaf.timestamp,
@@ -327,41 +327,37 @@ export class MerkleCalendar {
   }
 
   deserializeMC(json: string){
-    let tree = JSON.parse(json);
-    for (let y of tree.openT) {
-      for (let m of y.children) {
-        for (let l of m.children) {
+    const tree = JSON.parse(json);
+    for (const y of tree.openT) {
+      for (const m of y.children) {
+        for (const l of m.children) {
           const suList = []
-          for (let su of l.storageGroup.storageUnits) {
+          for (const su of l.storageGroup.storageUnits) {
             suList.push(new StorageUnit(su.hash, su.uuid))
           }
-          let sg = new StorageGroup(l.storageGroup.hash, suList);
+          const sg = new StorageGroup(l.storageGroup.hash, suList);
           this.addRegistration(l.name, l.hash, l.timestamp, false, sg, m.hash, y.hash);
         }
       }
     }
-    for (let y of tree.closedT) {
-      for (let m of y.children) {
-        for (let l of m.children) {
+    for (const y of tree.closedT) {
+      for (const m of y.children) {
+        for (const l of m.children) {
           const suList = []
-          for (let su of l.storageGroup.storageUnits) {
+          for (const su of l.storageGroup.storageUnits) {
             suList.push(new StorageUnit(su.hash, su.uuid))
           }
-          let sg = new StorageGroup(l.storageGroup.hash, suList);
+          const sg = new StorageGroup(l.storageGroup.hash, suList);
           this.addRegistration(l.name, l.hash, l.timestamp, true, sg, m.hash, y.hash);
         }
       }
     }
   }
 
-  serializeSG(leaf: LeafCalendar): Object{
-    interface storageGroupJSON {
-      hash: string;
-      storageUnits: Object[];
-    }
+  serializeSG(leaf: LeafCalendar): object{
     const sg = leaf.storageGroup;
     const suList = []
-    for (let su of sg.map) {
+    for (const su of sg.map) {
       suList.push({
         hash: su.hash,
         uuid: su.uuid
