@@ -319,7 +319,7 @@ export class MerkleCalendar {
       closedRoot: object
     }
     const tree: CalendarJSON = {
-      hash: MerkleTools.concatHash([(openT as InternalCalendar).hash, (closedT as InternalCalendar).hash]),
+      hash: this.getMCRoot(),
       openRoot: openT,
       closedRoot: closedT
     };
