@@ -5,6 +5,7 @@ import { Category } from './Category';
 import { StorageGroup } from './StorageGroup';
 import { CalendarNode } from './CalendarNode';
 import { ProofTree } from './ProofTree';
+import { StorageUnit } from "./StorageUnit";
 
 export class MerkleCalendar {
   private closed: InternalCalendar;
@@ -201,11 +202,12 @@ export class MerkleCalendar {
         openA = [];
         for (leaf of month.children) {
           leaf = leaf as LeafCalendar;
+          let sg = this.serializeSG((leaf as LeafCalendar));
           openA.push({
             name: leaf.name,
             timestamp: leaf.timestamp,
             hash: leaf.hash,
-            storageGroup: leaf.storageGroup,
+            storageGroup: sg,
           });
         }
         openM.push({
@@ -229,11 +231,12 @@ export class MerkleCalendar {
         closedA = [];
         for (leaf of month.children) {
           leaf = leaf as LeafCalendar;
+          let sg = this.serializeSG((leaf as LeafCalendar));
           closedA.push({
             name: leaf.name,
             timestamp: leaf.timestamp,
             hash: leaf.hash,
-            storageGroup: leaf.storageGroup,
+            storageGroup: sg,
           });
         }
         closedM.push({
@@ -304,5 +307,69 @@ export class MerkleCalendar {
     node = node.parent;
     result = result && MerkleTools.validateProof(proofTree.rootProof, node.hash, proofTree.rootHash);
     return result;
+  }
+
+  serializeMC(): string{
+    let openT;
+    let closedT;
+    [openT, closedT] = this.getTrees();
+    interface CalendarJSON {
+      hash: string;
+      openRoot: object;
+      closedRoot: object
+    }
+    const tree: CalendarJSON = {
+      hash: MerkleTools.concatHash([(openT as InternalCalendar).hash, (closedT as InternalCalendar).hash]),
+      openRoot: openT,
+      closedRoot: closedT
+    };
+    return JSON.stringify(tree);
+  }
+
+  deserializeMC(json: string){
+    let tree = JSON.parse(json);
+    for (let y of tree.openT) {
+      for (let m of y.children) {
+        for (let l of m.children) {
+          const suList = []
+          for (let su of l.storageGroup.storageUnits) {
+            suList.push(new StorageUnit(su.hash, su.uuid))
+          }
+          let sg = new StorageGroup(l.storageGroup.hash, suList);
+          this.addRegistration(l.name, l.hash, l.timestamp, false, sg, m.hash, y.hash);
+        }
+      }
+    }
+    for (let y of tree.closedT) {
+      for (let m of y.children) {
+        for (let l of m.children) {
+          const suList = []
+          for (let su of l.storageGroup.storageUnits) {
+            suList.push(new StorageUnit(su.hash, su.uuid))
+          }
+          let sg = new StorageGroup(l.storageGroup.hash, suList);
+          this.addRegistration(l.name, l.hash, l.timestamp, true, sg, m.hash, y.hash);
+        }
+      }
+    }
+  }
+
+  serializeSG(leaf: LeafCalendar): Object{
+    interface storageGroupJSON {
+      hash: string;
+      storageUnits: Object[];
+    }
+    const sg = leaf.storageGroup;
+    const suList = []
+    for (let su of sg.map) {
+      suList.push({
+        hash: su.hash,
+        uuid: su.uuid
+      })
+    }
+    return {
+      hash: leaf.storageGroup.hash,
+      map: suList
+    }
   }
 }
