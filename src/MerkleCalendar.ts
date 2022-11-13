@@ -8,13 +8,22 @@ import { ProofTree } from './ProofTree';
 import { StorageUnit } from "./StorageUnit";
 
 export class MerkleCalendar {
-  private closed: InternalCalendar;
-  private open: InternalCalendar;
+
+  private _closed: InternalCalendar;
+  private _open: InternalCalendar;
 
   constructor() {
     MerkleTools.initMT();
-    this.closed = new InternalCalendar('Closed', 0, null as any);
-    this.open = new InternalCalendar('Open', 0, null as any);
+    this._closed = new InternalCalendar('Closed', 0, null as any);
+    this._open = new InternalCalendar('Open', 0, null as any);
+  }
+
+  get closed(): InternalCalendar {
+    return this._closed;
+  }
+
+  get open(): InternalCalendar {
+    return this._open;
   }
 
   public addRegistration(
@@ -30,9 +39,9 @@ export class MerkleCalendar {
     const month = timestamp.getMonth();
     let tree;
     if (closed) {
-      tree = this.closed;
+      tree = this._closed;
     } else {
-      tree = this.open;
+      tree = this._open;
     }
     let monthNode = null;
     let yearNode = tree.getChildByName(year.toString());
@@ -77,8 +86,8 @@ export class MerkleCalendar {
   }
 
   public getBSPRoot(hash: string, oHash: string, cHash: string) {
-    const findC = this.closed.findNode(hash);
-    const findO = this.open.findNode(hash);
+    const findC = this._closed.findNode(hash);
+    const findO = this._open.findNode(hash);
     let closed = false;
     let node = null;
     if (findC != null) {
@@ -136,12 +145,12 @@ export class MerkleCalendar {
   }
 
   public loadTree(open: InternalCalendar, closed: InternalCalendar) {
-    this.open = open;
-    this.closed = closed;
+    this._open = open;
+    this._closed = closed;
   }
 
   public getTree(): InternalCalendar[] {
-    return [this.open, this.closed];
+    return [this._open, this._closed];
   }
 
   public getLeaves(): object[] {
@@ -150,7 +159,7 @@ export class MerkleCalendar {
     let year;
     const openA = [];
     const closedA = [];
-    for (year of this.open.children) {
+    for (year of this._open.children) {
       year = year as InternalCalendar;
       for (month of year.children) {
         month = month as InternalCalendar;
@@ -165,7 +174,7 @@ export class MerkleCalendar {
         }
       }
     }
-    for (year of this.closed.children) {
+    for (year of this._closed.children) {
       year = year as InternalCalendar;
       for (month of year.children) {
         month = month as InternalCalendar;
@@ -194,7 +203,7 @@ export class MerkleCalendar {
     let openA;
     let closedA;
     openT = [];
-    for (year of this.open.children) {
+    for (year of this._open.children) {
       year = year as InternalCalendar;
       openM = [];
       for (month of year.children) {
@@ -223,7 +232,7 @@ export class MerkleCalendar {
       });
     }
     closedT = [];
-    for (year of this.closed.children) {
+    for (year of this._closed.children) {
       year = year as InternalCalendar;
       closedM = [];
       for (month of year.children) {
@@ -255,8 +264,8 @@ export class MerkleCalendar {
   }
 
   getOCRoots(): string[] {
-    const cHash = this.closed.hash;
-    const oHash = this.open.hash;
+    const cHash = this._closed.hash;
+    const oHash = this._open.hash;
     if (cHash == null) {
       if (oHash == null) {
         return [null as any, null as any];
