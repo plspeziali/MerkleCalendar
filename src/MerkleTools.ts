@@ -22,7 +22,7 @@ export class MerkleTools {
     const leaves = list.map(value =>this._tree.bufferify(value))
     this._tree.addLeaves(leaves);
     const root = this._tree.getRoot()
-    return this._tree.bufferToHex(root);
+    return this._tree.bufferToHex(root, false)
   }
 
   public static getProof(leaf: string): object {

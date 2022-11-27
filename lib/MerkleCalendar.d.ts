@@ -4,9 +4,11 @@ import { StorageGroup } from './StorageGroup';
 import { CalendarNode } from './CalendarNode';
 import { ProofTree } from './ProofTree';
 export declare class MerkleCalendar {
-    private closed;
-    private open;
+    private _closed;
+    private _open;
     constructor();
+    get closed(): InternalCalendar;
+    get open(): InternalCalendar;
     addRegistration(name: string, hash: string, timestamp: Date, closed: boolean, storageGroup: StorageGroup, mHash: string, yHash: string): LeafCalendar;
     createLeaf(name: string, hash: string, timestamp: Date, closed: boolean, monthNode: InternalCalendar, storageGroup: StorageGroup): LeafCalendar;
     combineHash(timestamp: Date, hash: string): string;

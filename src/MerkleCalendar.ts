@@ -337,27 +337,27 @@ export class MerkleCalendar {
 
   deserializeMC(json: string){
     const tree = JSON.parse(json);
-    for (const y of tree.openT) {
+    for (const y of tree.openRoot) {
       for (const m of y.children) {
         for (const l of m.children) {
           const suList = []
-          for (const su of l.storageGroup.storageUnits) {
+          for (const su of l.storageGroup.map) {
             suList.push(new StorageUnit(su.hash, su.uuid))
           }
           const sg = new StorageGroup(l.storageGroup.hash, suList);
-          this.addRegistration(l.name, l.hash, l.timestamp, false, sg, m.hash, y.hash);
+          this.addRegistration(l.name, l.hash, new Date(l.timestamp), false, sg, m.hash, y.hash);
         }
       }
     }
-    for (const y of tree.closedT) {
+    for (const y of tree.closedRoot) {
       for (const m of y.children) {
         for (const l of m.children) {
           const suList = []
-          for (const su of l.storageGroup.storageUnits) {
+          for (const su of l.storageGroup.map) {
             suList.push(new StorageUnit(su.hash, su.uuid))
           }
           const sg = new StorageGroup(l.storageGroup.hash, suList);
-          this.addRegistration(l.name, l.hash, l.timestamp, true, sg, m.hash, y.hash);
+          this.addRegistration(l.name, l.hash, new Date(l.timestamp), true, sg, m.hash, y.hash);
         }
       }
     }
@@ -373,7 +373,7 @@ export class MerkleCalendar {
       })
     }
     return {
-      hash: leaf.storageGroup.hash,
+      hash: sg.hash,
       map: suList
     }
   }
